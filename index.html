@@ -120,13 +120,12 @@
             position: absolute;
             width: 100%;
             height: 100vh;
-            padding: 80px 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 60px 120px;
+            display: block;
             opacity: 0;
             transform: translateX(100%);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
         }
 
         .slide.active {
@@ -153,7 +152,9 @@
             font-size: 48px;
             font-weight: 600;
             color: var(--mckinsey-navy);
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+            margin-top: 20px;
+            padding-top: 0;
             line-height: 1.3;
         }
 
@@ -175,6 +176,9 @@
         .title-slide {
             background: linear-gradient(135deg, var(--mckinsey-navy) 0%, #003D6B 100%);
             color: var(--mckinsey-white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .title-slide h1 {
@@ -428,6 +432,9 @@
             background: linear-gradient(135deg, var(--mckinsey-steel) 0%, var(--mckinsey-navy) 100%);
             color: var(--mckinsey-white);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .cta-slide h2 {
@@ -568,20 +575,57 @@
 
         /* Print Styles */
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
             .sidebar,
             .controls {
-                display: none;
+                display: none !important;
             }
+            
             .presentation {
-                margin-left: 0;
+                margin-left: 0 !important;
             }
+            
+            .slides-container {
+                position: static !important;
+                height: auto !important;
+            }
+            
             .slide {
-                position: relative;
-                page-break-after: always;
-                transform: none !important;
+                position: static !important;
+                display: block !important;
                 opacity: 1 !important;
-                height: auto;
-                min-height: 100vh;
+                transform: none !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 90vh !important;
+                padding: 60px 80px !important;
+                margin: 0 !important;
+            }
+            
+            .slide:last-child {
+                page-break-after: auto !important;
+            }
+            
+            .slide.active,
+            .slide.prev {
+                position: static !important;
+            }
+            
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
             }
         }
     </style>
