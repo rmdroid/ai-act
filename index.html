@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU AI Act Compliance Ready Check | Robert Meyer</title>
+    <meta name="description" content="Strategischer Leitfaden für EU AI Act Compliance 2025-2027">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        /* McKinsey Style - Professional Consulting Presentation */
+        
+        :root {
+            --mckinsey-navy: #002856;
+            --mckinsey-gold: #D4B962;
+            --mckinsey-steel: #5C7A99;
+            --mckinsey-white: #FFFFFF;
+            --mckinsey-text: #1A1A1A;
+            --mckinsey-text-light: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background: var(--mckinsey-white);
+            color: var(--mckinsey-text);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--mckinsey-navy);
+            padding: 20px 10px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            color: var(--mckinsey-gold);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--mckinsey-gold);
+        }
+
+        .slide-thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .thumbnail {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--mckinsey-gold);
+            transform: translateX(5px);
+        }
+
+        .thumbnail.active {
+            background: rgba(212, 185, 98, 0.2);
+            border-color: var(--mckinsey-gold);
+        }
+
+        .thumb-preview {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--mckinsey-white);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--mckinsey-navy);
+        }
+
+        .thumb-title {
+            color: var(--mckinsey-white);
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Main Presentation Area */
+        .presentation {
+            margin-left: 250px;
+            min-height: 100vh;
+            background: var(--mckinsey-white);
+        }
+
+        .slides-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            padding: 80px 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Typography */
+        .slide h1 {
+            font-size: 64px;
+            font-weight: 600;
+            color: var(--mckinsey-navy);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .slide h2 {
+            font-size: 48px;
+            font-weight: 600;
+            color: var(--mckinsey-navy);
+            margin-bottom: 40px;
+            line-height: 1.3;
+        }
+
+        .slide h3 {
+            font-size: 32px;
+            font-weight: 500;
+            color: var(--mckinsey-steel);
+            margin-bottom: 24px;
+        }
+
+        .slide p {
+            font-size: 24px;
+            line-height: 1.6;
+            color: var(--mckinsey-text);
+            margin-bottom: 20px;
+        }
+
+        /* Title Slide */
+        .title-slide {
+            background: linear-gradient(135deg, var(--mckinsey-navy) 0%, #003D6B 100%);
+            color: var(--mckinsey-white);
+        }
+
+        .title-slide h1 {
+            color: var(--mckinsey-white);
+            font-size: 72px;
+            margin-bottom: 30px;
+        }
+
+        .title-slide h2 {
+            color: var(--mckinsey-gold);
+            font-size: 36px;
+            font-weight: 400;
+        }
+
+        .title-slide .meta {
+            margin-top: 80px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .title-slide .meta p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 40, 86, 0.05), rgba(212, 185, 98, 0.05));
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid var(--mckinsey-gold);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 40, 86, 0.1);
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--mckinsey-navy);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: var(--mckinsey-text-light);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .text-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .text-content li {
+            font-size: 22px;
+            padding: 18px 0 18px 50px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .text-content li::before {
+            content: "■";
+            position: absolute;
+            left: 0;
+            color: var(--mckinsey-gold);
+            font-size: 18px;
+            top: 18px;
+        }
+
+        /* Chart Slide */
+        .chart-slide canvas {
+            max-height: 520px;
+            margin-top: 50px;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(255, 200, 0, 0.1);
+            border-left: 5px solid #FFC800;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h3 {
+            color: #CC9900;
+            margin-bottom: 15px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(0, 155, 119, 0.05);
+            border-left: 5px solid var(--mckinsey-gold);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: -40px;
+            width: 2px;
+            background: var(--mckinsey-gold);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            background: var(--mckinsey-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mckinsey-navy);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .timeline-date {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--mckinsey-navy);
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            font-size: 18px;
+            color: var(--mckinsey-text);
+            line-height: 1.5;
+        }
+
+        /* Risk Categories */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .risk-category {
+            background: var(--mckinsey-white);
+            border: 2px solid var(--mckinsey-navy);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .risk-category:hover {
+            box-shadow: 0 10px 30px rgba(0, 40, 86, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .risk-category h3 {
+            color: var(--mckinsey-navy);
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .risk-category.unacceptable {
+            border-color: #CC0000;
+        }
+
+        .risk-category.high {
+            border-color: #FF9900;
+        }
+
+        .risk-category.limited {
+            border-color: #009B77;
+        }
+
+        .risk-category.minimal {
+            border-color: var(--mckinsey-steel);
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin-top: 40px;
+        }
+
+        .checklist li {
+            padding: 20px 0 20px 60px;
+            position: relative;
+            border-bottom: 1px solid rgba(0, 40, 86, 0.1);
+            font-size: 22px;
+            line-height: 1.5;
+        }
+
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--mckinsey-gold);
+            color: var(--mckinsey-navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        /* CTA Slide */
+        .cta-slide {
+            background: linear-gradient(135deg, var(--mckinsey-steel) 0%, var(--mckinsey-navy) 100%);
+            color: var(--mckinsey-white);
+            text-align: center;
+        }
+
+        .cta-slide h2 {
+            color: var(--mckinsey-white);
+            margin-bottom: 30px;
+        }
+
+        .cta-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cta-content p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 25px 70px;
+            background: var(--mckinsey-gold);
+            color: var(--mckinsey-navy);
+            font-size: 26px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 185, 98, 0.4);
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            background: rgba(0, 40, 86, 0.95);
+            padding: 18px 40px;
+            border-radius: 50px;
+            z-index: 1001;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls button {
+            background: var(--mckinsey-gold);
+            border: none;
+            color: var(--mckinsey-navy);
+            font-size: 22px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .controls button:hover {
+            transform: scale(1.15);
+            box-shadow: 0 5px 15px rgba(212, 185, 98, 0.5);
+        }
+
+        #slide-number {
+            color: var(--mckinsey-white);
+            font-size: 18px;
+            font-weight: 500;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 60px 80px;
+            }
+            .slide h1 {
+                font-size: 52px;
+            }
+            .slide h2 {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+            }
+            .presentation {
+                margin-left: 200px;
+            }
+            .slide {
+                padding: 60px 60px;
+            }
+            .two-column {
+                gap: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            .sidebar-header,
+            .thumb-title {
+                display: none;
+            }
+            .presentation {
+                margin-left: 60px;
+            }
+            .slide {
+                padding: 40px 30px;
+            }
+            .slide h1 {
+                font-size: 36px;
+            }
+            .slide h2 {
+                font-size: 28px;
+            }
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .stats-grid,
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar,
+            .controls {
+                display: none;
+            }
+            .presentation {
+                margin-left: 0;
+            }
+            .slide {
+                position: relative;
+                page-break-after: always;
+                transform: none !important;
+                opacity: 1 !important;
+                height: auto;
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">Navigation</div>
+        <div class="slide-thumbnails">
+            <!-- Thumbnails werden via JavaScript generiert -->
+        </div>
+    </nav>
+
+    <!-- Main Presentation -->
+    <main class="presentation">
+        <div class="slides-container">
+            
+            <!-- Slide 1: Title -->
+            <section class="slide title-slide">
+                <div class="content">
+                    <h1>EU AI Act<br>Compliance Ready Check</h1>
+                    <h2>Strategischer Leitfaden für Unternehmen 2025-2027</h2>
+                    <div class="meta">
+                        <p>Robert Meyer AI Consultant</p>
+                        <p>Dezember 2025</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 2: Executive Summary -->
+            <section class="slide">
+                <h2>Executive Summary: Drei kritische Erkenntnisse</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Kritische Fristen<br>bereits aktiv/kommend</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">€35M</div>
+                        <div class="stat-label">Max. Bußgeld oder<br>7% Jahresumsatz</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Extraterritoriale<br>Anwendung EU-Markt</div>
+                    </div>
+                </div>
+                <div class="info-box" style="margin-top: 60px;">
+                    <p style="font-size: 22px; line-height: 1.6; margin: 0;">
+                        Der EU AI Act ist seit <strong>1. August 2024</strong> in Kraft und wird schrittweise bis 2027 vollständig anwendbar. 
+                        Unternehmen, die KI-Systeme in der EU entwickeln, bereitstellen oder nutzen, müssen <strong>jetzt handeln</strong> – 
+                        unabhängig von ihrem Standort.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 3: Implementation Timeline -->
+            <section class="slide">
+                <h2>Implementation Timeline 2024-2027</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-date">1. August 2024</div>
+                        <div class="timeline-content">EU AI Act tritt in Kraft</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-date">2. Februar 2025</div>
+                        <div class="timeline-content"><strong>AKTIV:</strong> Verbotene AI-Praktiken & AI Literacy Pflichten</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot">✓</div>
+                        <div class="timeline-date">2. August 2025</div>
+                        <div class="timeline-content"><strong>AKTIV:</strong> GPAI Model Requirements & Governance-Strukturen</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot">→</div>
+                        <div class="timeline-date">2. August 2026</div>
+                        <div class="timeline-content"><strong>KOMMEND:</strong> High-Risk AI Systems (Annex III) – 8 Monate verbleibend</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot">→</div>
+                        <div class="timeline-date">2. August 2027</div>
+                        <div class="timeline-content">Erweiterte Übergangsphase für regulierte Produkte (Medical, Automotive)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Die 4 Risiko-Kategorien -->
+            <section class="slide">
+                <h2>Die 4 Risiko-Kategorien des EU AI Act</h2>
+                <div class="risk-grid">
+                    <div class="risk-category unacceptable">
+                        <h3>🚫 Unacceptable Risk</h3>
+                        <p style="font-size: 18px; line-height: 1.6;">
+                            <strong>Status:</strong> VERBOTEN seit 2. Februar 2025<br><br>
+                            Social Scoring, Manipulation, biometrische Kategorisierung, 
+                            Emotion Recognition (Workplace/Education), Predictive Policing
+                        </p>
+                    </div>
+                    <div class="risk-category high">
+                        <h3>⚠️ High-Risk</h3>
+                        <p style="font-size: 18px; line-height: 1.6;">
+                            <strong>Status:</strong> Pflichten ab Aug 2026<br><br>
+                            Employment, Education, Essential Services, Law Enforcement, 
+                            Migration, Justice – Strenge Anforderungen & CE-Kennzeichnung
+                        </p>
+                    </div>
+                    <div class="risk-category limited">
+                        <h3>ℹ️ Limited Risk</h3>
+                        <p style="font-size: 18px; line-height: 1.6;">
+                            <strong>Status:</strong> Transparenzpflichten<br><br>
+                            Chatbots, Deepfakes, Emotion Recognition (andere Kontexte) – 
+                            User muss über KI-Interaktion informiert werden
+                        </p>
+                    </div>
+                    <div class="risk-category minimal">
+                        <h3>✅ Minimal/No Risk</h3>
+                        <p style="font-size: 18px; line-height: 1.6;">
+                            <strong>Status:</strong> Keine Regulierung<br><br>
+                            Spam-Filter, KI-Games, Empfehlungssysteme – 
+                            Freiwillige Codes of Conduct empfohlen
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: Prohibited AI Practices -->
+            <section class="slide">
+                <h2>Prohibited AI Practices</h2>
+                <div class="warning-box">
+                    <h3>⚠️ SEIT 2. FEBRUAR 2025 VERBOTEN</h3>
+                    <p style="font-size: 20px; margin: 0;">Höchste Strafen: €35 Millionen oder 7% des weltweiten Jahresumsatzes</p>
+                </div>
+                <div class="two-column">
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Die 8 verbotenen Praktiken:</h3>
+                        <ul>
+                            <li>Kognitive Verhaltensmanipulation (subliminal techniques)</li>
+                            <li>Ausnutzung von Vulnerabilitäten (Alter, Behinderung, soziale Lage)</li>
+                            <li>Social Scoring durch öffentliche Stellen</li>
+                            <li>Predictive Policing basierend auf Profiling</li>
+                        </ul>
+                    </div>
+                    <div class="text-content">
+                        <ul style="margin-top: 64px;">
+                            <li>Facial Recognition Datenbanken (untargeted scraping)</li>
+                            <li>Emotion Recognition am Arbeitsplatz/Bildung (außer Sicherheit/Medizin)</li>
+                            <li>Biometrische Kategorisierung (Rasse, Religion, sexuelle Orientierung)</li>
+                            <li>Real-time Remote Biometric ID (öffentliche Räume, Ausnahmen eng begrenzt)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: High-Risk AI Systems -->
+            <section class="slide">
+                <h2>High-Risk AI Systems</h2>
+                <p style="font-size: 20px; color: var(--mckinsey-steel); margin-bottom: 40px;">
+                    Compliance-Frist: <strong>2. August 2026</strong> (8 Monate verbleibend)
+                </p>
+                <div class="two-column">
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Annex III Bereiche:</h3>
+                        <ul>
+                            <li>Biometric Identification & Categorization</li>
+                            <li>Critical Infrastructure Management</li>
+                            <li>Education & Vocational Training</li>
+                            <li>Employment (Recruiting, Screening, Evaluation)</li>
+                            <li>Essential Services (Credit, Insurance, Benefits)</li>
+                            <li>Law Enforcement</li>
+                            <li>Migration & Border Control</li>
+                            <li>Justice & Democratic Processes</li>
+                        </ul>
+                    </div>
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">9 Kern-Compliance-Pflichten:</h3>
+                        <ul>
+                            <li>Risk Management System (kontinuierlich, iterativ)</li>
+                            <li>Data Governance & Quality Management</li>
+                            <li>Technical Documentation (Article 11)</li>
+                            <li>Record-Keeping & Logging</li>
+                            <li>Transparency & User Information</li>
+                            <li>Human Oversight Design</li>
+                            <li>Accuracy, Robustness, Cybersecurity</li>
+                            <li>Quality Management System (Article 17)</li>
+                            <li>Conformity Assessment & CE Marking</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: GPAI Models -->
+            <section class="slide">
+                <h2>General Purpose AI (GPAI) Models</h2>
+                <div class="info-box">
+                    <p style="font-size: 20px; margin: 0;">
+                        ✅ <strong>SEIT 2. AUGUST 2025 AKTIV</strong> – Alle GPAI Provider müssen diese Anforderungen erfüllen
+                    </p>
+                </div>
+                <div class="two-column" style="margin-top: 50px;">
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Basis-Anforderungen (alle GPAI):</h3>
+                        <ul>
+                            <li>Technische Dokumentation & Modell-Informationen veröffentlichen</li>
+                            <li>Copyright Compliance nachweisen (Training-Daten-Quellen)</li>
+                            <li>Public Summary of Training Content bereitstellen</li>
+                            <li>Transparenz über Datenverarbeitung & Quellen</li>
+                            <li>Policy Dokumente & Governance-Strukturen</li>
+                        </ul>
+                    </div>
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Systemic Risk Models (zusätzlich):</h3>
+                        <ul>
+                            <li>Model Evaluations & Adversarial Testing</li>
+                            <li>Risk Assessment & Mitigation Measures</li>
+                            <li>Incident Reporting an EU Commission</li>
+                            <li>Cybersecurity Safeguards (Data/Model Poisoning, Evasion)</li>
+                            <li>Energy Consumption Tracking & Reporting</li>
+                        </ul>
+                        <div class="info-box" style="margin-top: 30px; padding: 20px;">
+                            <p style="font-size: 16px; margin: 0;">
+                                <strong>GPAI Code of Practice</strong> (freiwillig, Juli 2025 veröffentlicht) 
+                                bietet praktische Leitlinien für Compliance
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 8: 8-Step Compliance Checklist -->
+            <section class="slide">
+                <h2>8-Schritte Compliance Checklist</h2>
+                <div class="checklist">
+                    <li><strong>AI System Inventory erstellen</strong> – Alle KI-Systeme erfassen, kategorisieren (Provider/Deployer)</li>
+                    <li><strong>Risiko-Klassifizierung durchführen</strong> – Prohibited / High-Risk / Limited / Minimal zuordnen</li>
+                    <li><strong>Rollen & Verantwortlichkeiten definieren</strong> – Provider, Deployer, Importer, Distributor</li>
+                    <li><strong>Quality Management System etablieren</strong> – Article 17 konform (ISO 42001 empfohlen)</li>
+                    <li><strong>Risk Management System implementieren</strong> – Kontinuierlich, iterativ, lifecycle-übergreifend</li>
+                    <li><strong>Technische Dokumentation erstellen</strong> – Article 11, Conformity Assessment vorbereiten</li>
+                    <li><strong>AI Literacy Training durchführen</strong> – Alle Mitarbeiter, rollenbasiert (seit Feb 2025 Pflicht)</li>
+                    <li><strong>Monitoring & Audit-Prozesse einrichten</strong> – Post-Market Monitoring, Incident Management</li>
+                </div>
+            </section>
+
+            <!-- Slide 9: Dokumentations-Anforderungen -->
+            <section class="slide">
+                <h2>Dokumentations-Anforderungen für High-Risk AI</h2>
+                <div class="two-column">
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Technical Documentation (Article 11):</h3>
+                        <ul>
+                            <li>Intended Purpose & Scope of Use</li>
+                            <li>AI System Architecture & Design</li>
+                            <li>Training/Testing Data Description</li>
+                            <li>Data Governance Measures</li>
+                            <li>Pre-deployment Testing Results</li>
+                            <li>Human Oversight Mechanisms</li>
+                            <li>Accuracy/Performance Metrics</li>
+                            <li>Cybersecurity Measures</li>
+                        </ul>
+                    </div>
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Zusätzliche Dokumentation:</h3>
+                        <ul>
+                            <li>Risk Management Documentation (lifecycle)</li>
+                            <li>Quality Management System Records</li>
+                            <li>Conformity Assessment Reports</li>
+                            <li>EU Declaration of Conformity</li>
+                            <li>Post-Market Monitoring Logs (10 Jahre)</li>
+                            <li>Incident Reports & Corrective Actions</li>
+                            <li>User Instructions & Transparency Info</li>
+                        </ul>
+                        <div class="warning-box" style="margin-top: 30px; padding: 20px;">
+                            <p style="font-size: 16px; margin: 0;">
+                                <strong>Aufbewahrungspflicht:</strong> 10 Jahre nach Markteinführung – 
+                                für Auditierbarkeit & Enforcement-Verfahren
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 10: Strafen & Enforcement -->
+            <section class="slide">
+                <h2>Strafen & Enforcement</h2>
+                <div class="stats-grid">
+                    <div class="stat-card" style="border-left-color: #CC0000;">
+                        <div class="stat-number" style="color: #CC0000;">€35M</div>
+                        <div class="stat-label">oder 7% Umsatz<br><strong>Prohibited Practices</strong></div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #FF9900;">
+                        <div class="stat-number" style="color: #FF9900;">€15M</div>
+                        <div class="stat-label">oder 3% Umsatz<br><strong>Sonstige Verstöße</strong></div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: #009B77;">
+                        <div class="stat-number" style="color: #009B77;">€7.5M</div>
+                        <div class="stat-label">oder 1% Umsatz<br><strong>Falsche Informationen</strong></div>
+                    </div>
+                </div>
+                <div class="two-column" style="margin-top: 60px;">
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">Enforcement-Strukturen:</h3>
+                        <ul>
+                            <li>European AI Office (zentrale Koordination)</li>
+                            <li>National Market Surveillance Authorities (seit Aug 2025 aktiv)</li>
+                            <li>AI Board (Advisory & Guidance)</li>
+                            <li>Scientific Panel (GPAI Systemic Risks)</li>
+                            <li>Notified Bodies (Conformity Assessment)</li>
+                        </ul>
+                    </div>
+                    <div class="text-content">
+                        <h3 style="margin-bottom: 20px;">SME-Erleichterungen:</h3>
+                        <ul>
+                            <li>Reduzierte Bußgelder (niedrigerer Schwellenwert)</li>
+                            <li>Priority Access zu Regulatory Sandboxes (ab 2028)</li>
+                            <li>Dedizierte Support-Kanäle & Guidance</li>
+                            <li>Reduzierte Conformity Assessment Fees</li>
+                            <li>Tailored Training & Awareness Programs</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 11: Readiness Assessment Framework -->
+            <section class="slide">
+                <h2>Readiness Assessment Framework</h2>
+                <div style="margin-top: 40px;">
+                    <div style="margin-bottom: 50px;">
+                        <h3 style="color: var(--mckinsey-navy); margin-bottom: 20px;">Phase 1: Current State Analysis</h3>
+                        <div class="text-content">
+                            <ul>
+                                <li>Wo stehen Sie aktuell? AI System Inventory vollständig?</li>
+                                <li>Welche Systeme fallen unter High-Risk (Annex III)?</li>
+                                <li>Sind verbotene Praktiken (seit Feb 2025) ausgeschlossen?</li>
+                                <li>Existiert AI Literacy Training für alle Mitarbeiter?</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 50px;">
+                        <h3 style="color: var(--mckinsey-navy); margin-bottom: 20px;">Phase 2: Gap Analysis</h3>
+                        <div class="text-content">
+                            <ul>
+                                <li>Welche Dokumentation fehlt (Technical Documentation, Risk Management)?</li>
+                                <li>Ist Quality Management System (Article 17) implementiert?</li>
+                                <li>Sind Human Oversight Mechanisms designt & getestet?</li>
+                                <li>Cybersecurity Measures gegen AI-spezifische Threats vorhanden?</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--mckinsey-navy); margin-bottom: 20px;">Phase 3: Roadmap & Timeline</h3>
+                        <div class="text-content">
+                            <ul>
+                                <li>Priorisierung: Highest-Risk Systems zuerst (Frist Aug 2026)</li>
+                                <li>Resource Allocation: Budget, Team, externe Expertise</li>
+                                <li>Milestones: Q1 2026 Documentation, Q2 2026 Conformity Assessment</li>
+                                <li>Continuous Compliance: Post-Market Monitoring & Updates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 12: Next Steps & CTA -->
+            <section class="slide cta-slide">
+                <h2>Next Steps: Ihre Handlungsempfehlung</h2>
+                <div class="cta-content">
+                    <div class="two-column" style="text-align: left; margin-top: 40px;">
+                        <div class="text-content">
+                            <h3 style="color: var(--mckinsey-gold); margin-bottom: 20px;">Sofortmaßnahmen (Q1 2026):</h3>
+                            <ul style="color: rgba(255, 255, 255, 0.9);">
+                                <li>AI System Inventory erstellen & aktualisieren</li>
+                                <li>Risk Assessment für alle Systeme durchführen</li>
+                                <li>AI Literacy Training für gesamte Organisation starten</li>
+                                <li>Prohibited Practices final ausschließen</li>
+                            </ul>
+                        </div>
+                        <div class="text-content">
+                            <h3 style="color: var(--mckinsey-gold); margin-bottom: 20px;">Mittelfristig (Q2-Q3 2026):</h3>
+                            <ul style="color: rgba(255, 255, 255, 0.9);">
+                                <li>Quality & Risk Management Systems implementieren</li>
+                                <li>Technical Documentation für High-Risk AI erstellen</li>
+                                <li>Conformity Assessment vorbereiten</li>
+                                <li>Post-Market Monitoring Prozesse etablieren</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 60px;">
+                        <p style="font-size: 22px; color: rgba(255, 255, 255, 0.95); margin-bottom: 40px;">
+                            Der EU AI Act ist keine Option – er ist Realität. Proaktive Compliance sichert nicht nur 
+                            rechtliche Konformität, sondern schafft Vertrauen bei Kunden, Partnern und Stakeholdern.
+                        </p>
+                        <a href="#" class="cta-button">Kostenlose Compliance-Beratung vereinbaren</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Navigation Controls -->
+    <div class="controls">
+        <button id="prev">←</button>
+        <span id="slide-number">1 / 12</span>
+        <button id="next">→</button>
+        <button id="export-pdf" title="Als PDF exportieren">📄</button>
+    </div>
+
+    <script>
+        // Presentation Controller
+        class PresentationController {
+            constructor() {
+                this.currentSlide = 0;
+                this.slides = document.querySelectorAll('.slide');
+                this.totalSlides = this.slides.length;
+                this.init();
+            }
+
+            init() {
+                this.setupNavigation();
+                this.setupKeyboard();
+                this.setupTouch();
+                this.generateThumbnails();
+                this.showSlide(0);
+                this.setupPDFExport();
+            }
+
+            showSlide(n) {
+                this.slides.forEach(slide => {
+                    slide.classList.remove('active', 'prev');
+                });
+
+                this.currentSlide = (n + this.totalSlides) % this.totalSlides;
+                this.slides[this.currentSlide].classList.add('active');
+                
+                this.updateThumbnails();
+                this.updateSlideNumber();
+            }
+
+            nextSlide() {
+                this.showSlide(this.currentSlide + 1);
+            }
+
+            prevSlide() {
+                this.showSlide(this.currentSlide - 1);
+            }
+
+            setupNavigation() {
+                document.getElementById('next').addEventListener('click', () => this.nextSlide());
+                document.getElementById('prev').addEventListener('click', () => this.prevSlide());
+            }
+
+            setupKeyboard() {
+                document.addEventListener('keydown', (e) => {
+                    switch(e.key) {
+                        case 'ArrowRight':
+                        case 'PageDown':
+                        case ' ':
+                            e.preventDefault();
+                            this.nextSlide();
+                            break;
+                        case 'ArrowLeft':
+                        case 'PageUp':
+                            e.preventDefault();
+                            this.prevSlide();
+                            break;
+                        case 'Home':
+                            e.preventDefault();
+                            this.showSlide(0);
+                            break;
+                        case 'End':
+                            e.preventDefault();
+                            this.showSlide(this.totalSlides - 1);
+                            break;
+                        case 'f':
+                        case 'F':
+                            e.preventDefault();
+                            this.toggleFullscreen();
+                            break;
+                    }
+                });
+            }
+
+            setupTouch() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                
+                document.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    this.handleSwipe(touchStartX, touchEndX);
+                }, { passive: true });
+            }
+
+            handleSwipe(startX, endX) {
+                const threshold = 50;
+                if (endX < startX - threshold) {
+                    this.nextSlide();
+                }
+                if (endX > startX + threshold) {
+                    this.prevSlide();
+                }
+            }
+
+            generateThumbnails() {
+                const container = document.querySelector('.slide-thumbnails');
+                const titles = [
+                    'Titel',
+                    'Executive Summary',
+                    'Timeline',
+                    'Risiko-Kategorien',
+                    'Prohibited AI',
+                    'High-Risk AI',
+                    'GPAI Models',
+                    'Checklist',
+                    'Dokumentation',
+                    'Strafen',
+                    'Readiness',
+                    'Next Steps'
+                ];
+                
+                this.slides.forEach((slide, index) => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'thumbnail';
+                    thumb.innerHTML = `
+                        <div class="thumb-preview">
+                            <span>${index + 1}</span>
+                        </div>
+                        <div class="thumb-title">${titles[index]}</div>
+                    `;
+                    thumb.addEventListener('click', () => this.showSlide(index));
+                    container.appendChild(thumb);
+                });
+            }
+
+            updateThumbnails() {
+                const thumbnails = document.querySelectorAll('.thumbnail');
+                thumbnails.forEach((thumb, index) => {
+                    thumb.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+
+            updateSlideNumber() {
+                const numberDisplay = document.getElementById('slide-number');
+                numberDisplay.textContent = `${this.currentSlide + 1} / ${this.totalSlides}`;
+            }
+
+            setupPDFExport() {
+                document.getElementById('export-pdf').addEventListener('click', () => {
+                    window.print();
+                });
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.log('Fullscreen nicht verfügbar:', err);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Initialize presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            new PresentationController();
+        });
+    </script>
+</body>
+</html>
